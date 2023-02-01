@@ -12,7 +12,7 @@ datasource db {
 
 model User {
   id          String           @id @default(uuid())
-  name        String
+  username    String
   password    String
   email       String           @unique
   saved_games UserSavedGames[]
@@ -26,8 +26,8 @@ model Game {
   story_playtime Int
   sales          Int
   rating         Int
-  year           Int
   genre          String
+  description    String
   saved_games    UserSavedGames[]
 }
 
