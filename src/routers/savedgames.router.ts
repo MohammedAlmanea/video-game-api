@@ -10,7 +10,7 @@ import { savedGamesSchema } from '../zodSchema/savedgames.schema';
 const router = express.Router();
 
 router.post('/games/save', Validate(savedGamesSchema), saveGame);
-router.get('/games/save/:id', Validate(savedGamesSchema), getSavedGames);
-router.delete('/games/save/:id', Validate(savedGamesSchema), deleteSave);
+router.get('/games/save/:id', getSavedGames);
+router.delete('/games/save/:id', deleteSave);
 
 export default router;
