@@ -43,6 +43,18 @@ export const getSavedGames = async (req: Request, res: Response) => {
 
     const games = await prisma.userSavedGames.findMany({
       where: { user_id: id },
+      select: {
+        game: {
+          select: {
+            name: true,
+            image: true,
+            genre: true,
+            description: true,
+            sales: true,
+            rating: true,
+          },
+        },
+      },
     });
     res.status(200).json(games);
   } catch (error) {
