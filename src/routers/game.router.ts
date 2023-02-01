@@ -19,12 +19,12 @@ const router = express.Router();
 router.get('/games', getAllgames);
 router.get('/games/:genre', gamesByGenre);
 router.get('/games/name/:name', gamesByName);
-router.get('/games/asc', gamesByStoryPlayTimeAscend);
-router.get('/games/sales', gamesBySales);
-router.get('/games/rating', gamesByRating);
-router.get('/games/desc', gamesByStoryPlayTimeDesc);
+router.get('/games/sort/asc', gamesByStoryPlayTimeAscend);
+router.get('/games/sort/des', gamesByStoryPlayTimeDesc);
+router.get('/games/sort/sales', gamesBySales);
+router.get('/games/sort/rating', gamesByRating);
 router.post('/games', Validate(gameSchema), addGame);
 router.delete('/games/:id', deleteGame);
-router.put('/game/:id', Validate(gameSchema), updateGame);
+router.put('/games/:id', Validate(gameSchema), updateGame);
 
 export default router;
