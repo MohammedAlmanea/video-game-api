@@ -146,7 +146,7 @@ export const gamesByGenre = async (req: Request, res: Response) => {
   try {
     const { gameGenre } = req.params;
     console.log(gameGenre);
-    
+
     const games = await prisma.game.findMany({
       where: { genre: gameGenre },
     });
