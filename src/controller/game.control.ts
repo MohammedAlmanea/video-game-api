@@ -127,6 +127,40 @@ export const gamesByRating = async (req: Request, res: Response) => {
   }
 };
 
+export const gamesByPriceDesc = async (req: Request, res: Response) => {
+  try {
+    const games = await prisma.game.findMany({
+      orderBy: { price: 'desc' },
+    });
+    if (games.length === 0) {
+      res.status(404).json({ message: 'There is no games' });
+    }
+    res.status(200).json(games);
+  } catch (error) {
+    const prismaError = error as PrismaClientKnownRequestError;
+    return res.status(400).json({
+      message: prismaError.message,
+    });
+  }
+};
+
+export const gamesByPriceAscend = async (req: Request, res: Response) => {
+  try {
+    const games = await prisma.game.findMany({
+      orderBy: { price: 'asc' },
+    });
+    if (games.length === 0) {
+      res.status(404).json({ message: 'There is no games' });
+    }
+    res.status(200).json(games);
+  } catch (error) {
+    const prismaError = error as PrismaClientKnownRequestError;
+    return res.status(400).json({
+      message: prismaError.message,
+    });
+  }
+};
+
 export const gamesBySales = async (req: Request, res: Response) => {
   try {
     const games = await prisma.game.findMany({
