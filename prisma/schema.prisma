@@ -25,6 +25,7 @@ model Game {
   name           String
   story_playtime Int
   sales          Int
+  price          Int
   rating         Int
   genre          String
   description    String
