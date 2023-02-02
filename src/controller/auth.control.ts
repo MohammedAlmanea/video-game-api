@@ -2,10 +2,12 @@ import { User } from '@prisma/client';
 import { Request, Response } from 'express';
 import { prisma } from '../config/db';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import argon from 'argon2';
 
 export const Register = async (req: Request, res: Response) => {
   try {
     const newUser = req.body as User;
+    newUser.password = await argon.hash(newUser.password);
 
     await prisma.user.create({
       data: newUser,
@@ -28,9 +30,15 @@ export const Login = async (req: Request, res: Response) => {
     const login = await prisma.user.findFirst({
       where: {
         username,
-        password,
       },
     });
+    const validPass = await argon.verify(login!.password, password);
+
+    if (!validPass) {
+      return res.status(400).json({
+        message: 'username or password is not correct!',
+      });
+    }
     res.status(200).json(login);
   } catch (error) {
     const prismaError = error as PrismaClientKnownRequestError;
@@ -52,5 +60,3 @@ export const getAllUsers = async (req: Request, res: Response) => {
     });
   }
 };
-
-
