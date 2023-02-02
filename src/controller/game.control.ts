@@ -5,7 +5,8 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
 export const addGame = async (req: Request, res: Response) => {
   try {
-    const newGame = req.body as Game;
+    let newGame = req.body as Game;
+    newGame.name = newGame.name.toUpperCase()
     await prisma.game.create({
       data: newGame,
     });
@@ -23,6 +24,10 @@ export const addGame = async (req: Request, res: Response) => {
 export const getAllgames = async (req: Request, res: Response) => {
   try {
     const games = await prisma.game.findMany();
+    if(games.length === 0)
+    {
+      res.status(404).json({message:'There is no games'})
+    }
     res.status(200).json(games);
   } catch (error) {
     const prismaError = error as PrismaClientKnownRequestError;
@@ -73,6 +78,9 @@ export const gamesByStoryPlayTimeDesc = async (req: Request, res: Response) => {
     const games = await prisma.game.findMany({
       orderBy: { story_playtime: 'desc' },
     });
+    if (games.length === 0) {
+      res.status(404).json({ message: 'There is no games' });
+    }
     res.status(200).json(games);
   } catch (error) {
     const prismaError = error as PrismaClientKnownRequestError;
@@ -90,6 +98,9 @@ export const gamesByStoryPlayTimeAscend = async (
     const games = await prisma.game.findMany({
       orderBy: { story_playtime: 'asc' },
     });
+    if (games.length === 0) {
+      res.status(404).json({ message: 'There is no games' });
+    }
     res.status(200).json(games);
   } catch (error) {
     const prismaError = error as PrismaClientKnownRequestError;
@@ -104,6 +115,9 @@ export const gamesByRating = async (req: Request, res: Response) => {
     const games = await prisma.game.findMany({
       orderBy: { rating: 'desc' },
     });
+    if (games.length === 0) {
+      res.status(404).json({ message: 'There is no games' });
+    }
     res.status(200).json(games);
   } catch (error) {
     const prismaError = error as PrismaClientKnownRequestError;
@@ -118,6 +132,9 @@ export const gamesBySales = async (req: Request, res: Response) => {
     const games = await prisma.game.findMany({
       orderBy: { sales: 'desc' },
     });
+    if (games.length === 0) {
+      res.status(404).json({ message: 'There is no games' });
+    }
     res.status(200).json(games);
   } catch (error) {
     const prismaError = error as PrismaClientKnownRequestError;
@@ -129,10 +146,14 @@ export const gamesBySales = async (req: Request, res: Response) => {
 
 export const gamesByName = async (req: Request, res: Response) => {
   try {
-    const { name } = req.params;
+    const { name } = (req.params as unknown as string).toUpperCase;
+
     const games = await prisma.game.findMany({
       where: { name: name },
     });
+    if (games.length === 0) {
+      res.status(404).json({ message: 'There is no games With this name' });
+    }
     res.status(200).json(games);
   } catch (error) {
     const prismaError = error as PrismaClientKnownRequestError;
