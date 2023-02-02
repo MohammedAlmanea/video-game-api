@@ -14,6 +14,9 @@
 - Zod
 - argon2
 
+## Database visualization
+![db Diagram](db.png)
+
 
 ## API routes
 
