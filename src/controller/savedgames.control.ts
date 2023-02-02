@@ -44,13 +44,14 @@ export const getSavedGames = async (req: Request, res: Response) => {
     const games = await prisma.userSavedGames.findMany({
       where: { user_id: id },
       select: {
+        id: true,
         game: {
           select: {
             name: true,
             image: true,
             genre: true,
             description: true,
-            sales: true,
+            price:true,
             rating: true,
           },
         },
